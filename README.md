@@ -9,4 +9,21 @@ sexism. The studies demonstrate that higher levels of substratism predict a lowe
 digital entities in moral dilemmas. Ultimately, the research provides a framework for quantifying how the physical substrate of an agent 
 influences our willingness to grant it ethical consideration.
 
+"Substratism: Conceptualizing and measuring moral bias against AI"
 Paper Link: https://www.sciencedirect.com/science/article/pii/S0747563226002177
+Cite:
+Ali Ladak a b
+, 
+Janet V.T. Pauketat b
+, 
+Jacy Reese Anthis b c
+, 
+Steve Loughnan a
+, 
+Matti Wilks a
+a
+School of Philosophy, Psychology, and Language Sciences, University of Edinburgh, 3 Charles St, Edinburgh, EH8 9AD, UK
+b
+Sentience Institute, 165 Broadway, Fl. 23rd, New York, NY, 10006, USA
+c
+Department of Sociology, University of Chicago, 1126 E. 59th Street, Room 410, Chicago, IL, 60637, USA
