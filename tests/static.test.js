@@ -13,10 +13,10 @@ function read(relativePath) {
 test("ships a dependency-free offline entrypoint", () => {
   const html = read("index.html");
   assert.match(html, /href="style\.css"/);
-  assert.match(html, /src="js\/substratism-core\.js"/);
-  assert.match(html, /src="js\/sonification\.js"/);
-  assert.match(html, /src="js\/visuals\.js"/);
-  assert.match(html, /src="js\/app\.js"/);
+  assert.match(html, /src="js\/substratism-core\.js\?v=1\.0\.1"/);
+  assert.match(html, /src="js\/sonification\.js\?v=1\.0\.1"/);
+  assert.match(html, /src="js\/visuals\.js\?v=1\.0\.1"/);
+  assert.match(html, /src="js\/app\.js\?v=1\.0\.1"/);
   assert.doesNotMatch(html, /<script[^>]+src="https?:/i);
   assert.doesNotMatch(html, /<link[^>]+href="https?:/i);
   assert.doesNotMatch(html, /type="module"/i);
