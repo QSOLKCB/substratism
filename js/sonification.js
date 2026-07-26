@@ -3,12 +3,12 @@
   const core = global.SubstratismCore || (
     typeof require !== "undefined" ? require("./substratism-core.js") : null
   );
-  const api = factory(core);
+  const api = factory(core, global);
   if (typeof module !== "undefined" && module.exports) {
     module.exports = api;
   }
   global.SubstratismAudio = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function (Core) {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Core, Runtime) {
   "use strict";
 
   if (!Core) {
@@ -162,7 +162,7 @@
 
     async ensureContext() {
       if (!this.context) {
-        const ContextClass = global.AudioContext || global.webkitAudioContext;
+        const ContextClass = Runtime.AudioContext || Runtime.webkitAudioContext;
         if (!ContextClass) {
           throw new Error("This browser does not expose the Web Audio API.");
         }
@@ -220,7 +220,7 @@
 
     stop() {
       if (this.timer) {
-        global.clearTimeout(this.timer);
+        Runtime.clearTimeout(this.timer);
         this.timer = 0;
       }
       if (this.mediaElement) {
@@ -313,7 +313,7 @@
 
       if (scheduleNext) {
         const delay = (60 / params.tempo / 2) * 1000;
-        this.timer = global.setTimeout(
+        this.timer = Runtime.setTimeout(
           () => this.applyGeneratedStep(this.step, true),
           delay
         );

@@ -3,12 +3,12 @@
   const core = global.SubstratismCore || (
     typeof require !== "undefined" ? require("./substratism-core.js") : null
   );
-  const api = factory(core);
+  const api = factory(core, global);
   if (typeof module !== "undefined" && module.exports) {
     module.exports = api;
   }
   global.SubstratismVisuals = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function (Core) {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Core, Runtime) {
   "use strict";
 
   if (!Core) {
@@ -107,7 +107,7 @@
 
   function prepareCanvas(canvas, minimumHeight) {
     const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(global.devicePixelRatio || 1, 2);
+    const dpr = Math.min(Runtime.devicePixelRatio || 1, 2);
     const width = Math.max(320, Math.round(rect.width));
     const height = Math.max(minimumHeight, Math.round(rect.height || minimumHeight));
     const pixelWidth = Math.round(width * dpr);
@@ -214,7 +214,7 @@
       this.frame = 0;
       this.lastTime = 0;
       this.animate = this.animate.bind(this);
-      this.frame = global.requestAnimationFrame(this.animate);
+      this.frame = Runtime.requestAnimationFrame(this.animate);
     }
 
     setView(view) {
@@ -245,7 +245,7 @@
     }
 
     destroy() {
-      global.cancelAnimationFrame(this.frame);
+      Runtime.cancelAnimationFrame(this.frame);
     }
 
     animate(timestamp) {
@@ -255,7 +255,7 @@
         this.time += delta;
       }
       this.draw();
-      this.frame = global.requestAnimationFrame(this.animate);
+      this.frame = Runtime.requestAnimationFrame(this.animate);
     }
 
     draw() {

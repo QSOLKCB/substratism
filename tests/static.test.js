@@ -87,3 +87,22 @@ test("deploys the static site with current Pages actions", () => {
   assert.match(workflow, /actions\/deploy-pages@v5/);
   assert.match(workflow, /path: \./);
 });
+
+test("injects the browser runtime into visual and audio modules", () => {
+  const visuals = read("js/visuals.js");
+  const audio = read("js/sonification.js");
+
+  assert.match(visuals, /factory\(core, global\)/);
+  assert.match(visuals, /function \(Core, Runtime\)/);
+  assert.doesNotMatch(
+    visuals,
+    /global\.(?:devicePixelRatio|requestAnimationFrame|cancelAnimationFrame)/
+  );
+
+  assert.match(audio, /factory\(core, global\)/);
+  assert.match(audio, /function \(Core, Runtime\)/);
+  assert.doesNotMatch(
+    audio,
+    /global\.(?:AudioContext|webkitAudioContext|setTimeout|clearTimeout)/
+  );
+});
