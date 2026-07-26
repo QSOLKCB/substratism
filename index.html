@@ -1,0 +1,337 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Offline interactive visual and sonification laboratory for the eight-item Substratism Scale and its published moral, resource, and advocacy associations.">
+  <title>Substratism VIZ · Moral Substrate Observatory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="brand-mark" aria-hidden="true">
+      <span>S∕8</span>
+      <b>AI↔BIO</b>
+    </div>
+    <div class="brand-copy">
+      <p class="eyebrow">QSOL-IMC · PSYCHOMETRIC RECEIVER LAB</p>
+      <h1>Substratism VIZ</h1>
+      <p>Moral substrate topology, outcome associations, and a shared audiovisual signal path.</p>
+    </div>
+    <nav class="header-links" aria-label="Project links">
+      <a href="https://doi.org/10.1016/j.chb.2026.109120">Ladak et al. (2026)</a>
+      <a href="https://osf.io/rb4jw/">Open materials</a>
+      <span class="status-chip"><i aria-hidden="true"></i>offline-ready</span>
+    </nav>
+  </header>
+
+  <main class="app-shell">
+    <aside class="control-rack" aria-label="Substratism laboratory controls">
+      <section class="rack-section">
+        <div class="section-label"><span>01</span>Observation receiver</div>
+        <fieldset class="view-switch">
+          <legend class="sr-only">Visual receiver</legend>
+          <label>
+            <input type="radio" name="viewMode" value="map" checked>
+            <span><b>Concept map</b><small>four-branch topology</small></span>
+          </label>
+          <label>
+            <input type="radio" name="viewMode" value="scale">
+            <span><b>Scale lattice</b><small>eight scored items</small></span>
+          </label>
+          <label>
+            <input type="radio" name="viewMode" value="outcomes">
+            <span><b>Moral delta</b><small>six associations</small></span>
+          </label>
+          <label>
+            <input type="radio" name="viewMode" value="coefficients">
+            <span><b>Effect field</b><small>β and odds ratios</small></span>
+          </label>
+        </fieldset>
+        <label id="mapFocusLabel" for="mapFocus">
+          Concept branch
+          <select id="mapFocus">
+            <option value="all">All four branches</option>
+            <option value="definition">Definition and core concept</option>
+            <option value="scale">8-item validated scale</option>
+            <option value="relations">Relation to other prejudices</option>
+            <option value="impact">Moral and behavioural impact</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="rack-section">
+        <div class="section-label"><span>02</span>8-item scale input</div>
+        <div class="preset-row" role="group" aria-label="Scale presets">
+          <button type="button" data-preset="lower">Lower range</button>
+          <button type="button" data-preset="midpoint">Midpoint</button>
+          <button type="button" data-preset="higher">Higher range</button>
+        </div>
+        <div id="scaleControls" class="scale-controls"></div>
+        <p class="control-note">
+          Item 2 is reverse-scored. This local explorer is educational, not a diagnostic or a substitute for the validated research protocol.
+        </p>
+      </section>
+
+      <section class="rack-section audio-controls">
+        <div class="section-label"><span>03</span>Audio → visual signal</div>
+        <label for="audioSource">
+          Local source
+          <select id="audioSource">
+            <option value="generated">Generated scale sonification</option>
+            <option value="microphone">Microphone analyser</option>
+            <option value="file">Local audio file</option>
+          </select>
+        </label>
+        <label id="audioFileLabel" class="file-input" for="audioFile" hidden>
+          Choose audio
+          <input id="audioFile" type="file" accept="audio/*">
+        </label>
+        <div class="transport-row">
+          <button id="startAudio" class="primary" type="button">Start signal</button>
+          <button id="stopAudio" type="button" disabled>Stop</button>
+        </div>
+        <div class="two-controls">
+          <label for="sensitivity">
+            Reactivity
+            <output id="sensitivityValue" for="sensitivity">1.00×</output>
+            <input id="sensitivity" type="range" min="25" max="250" value="100" step="5">
+          </label>
+          <label for="tuning">
+            Receiver tuning
+            <select id="tuning">
+              <option value="432">A4 = 432 Hz</option>
+              <option value="440">A4 = 440 Hz</option>
+            </select>
+          </label>
+        </div>
+        <p id="audioStatus" class="control-note" role="status">Audio idle. Microphone and file samples remain inside this page.</p>
+      </section>
+
+      <section class="rack-section">
+        <div class="section-label"><span>04</span>Optional render</div>
+        <div class="export-grid">
+          <button id="downloadPng" type="button">Snapshot .PNG</button>
+          <button id="downloadState" type="button">State .JSON</button>
+          <button id="renderWav" type="button">Sonification .WAV</button>
+          <button id="recordWebm" type="button">Record .WEBM</button>
+        </div>
+        <div class="two-controls render-options">
+          <label for="renderDuration">
+            Render length
+            <select id="renderDuration">
+              <option value="8">8 seconds</option>
+              <option value="16" selected>16 seconds</option>
+              <option value="30">30 seconds</option>
+            </select>
+          </label>
+          <label class="check-row">
+            <input id="recordAudio" type="checkbox" checked>
+            <span>Include generated audio</span>
+          </label>
+        </div>
+        <p id="renderStatus" class="control-note" role="status">Rendering is optional; live exploration requires no export.</p>
+      </section>
+
+      <section class="rack-section">
+        <div class="section-label"><span>05</span>Motion and privacy</div>
+        <label class="check-row">
+          <input id="reducedMotion" type="checkbox">
+          <span>Reduce ambient motion</span>
+        </label>
+        <p class="control-note">No analytics, server, upload path, CDN, framework, or runtime dependency.</p>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <section class="model-heading" aria-labelledby="activeViewTitle">
+        <div>
+          <p class="eyebrow">ACTIVE RECEIVER</p>
+          <h2 id="activeViewTitle">Concept map · four-branch topology</h2>
+        </div>
+        <p id="activeViewSummary">The map supplied with the project is rebuilt as a responsive topology whose branches share the sonification clock.</p>
+      </section>
+
+      <section class="metric-grid" aria-label="Current scale and study fixtures">
+        <article>
+          <span>Configured score</span>
+          <strong id="scoreMetric">4.00</strong>
+          <small>corrected mean · 1–7</small>
+        </article>
+        <article>
+          <span>Substrate-explicit</span>
+          <strong id="explicitMetric">4.00</strong>
+          <small>items 1, 3, 5, 7</small>
+        </article>
+        <article>
+          <span>Treatment / capacity</span>
+          <strong id="implicitMetric">4.00</strong>
+          <small>items 2, 4, 6, 8</small>
+        </article>
+        <article>
+          <span>Internal reliability</span>
+          <strong>0.84–0.91</strong>
+          <small>Cronbach’s α · studies 1–5</small>
+        </article>
+        <article>
+          <span>Study participants</span>
+          <strong>2,129</strong>
+          <small>five preregistered studies</small>
+        </article>
+      </section>
+
+      <article class="visual-panel primary-visual">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">SHARED AUDIOVISUAL STATE</p>
+            <h2 id="canvasTitle">Substratism concept topology</h2>
+          </div>
+          <span id="signalBadge">signal idle</span>
+        </header>
+        <div class="canvas-wrap">
+          <canvas id="fieldCanvas" role="img" aria-label="Interactive abstract visualization of the Substratism Scale, concept map, and published outcome associations."></canvas>
+          <p class="canvas-hint">audio bands → grid, glow, reach, tension, and active-node traversal</p>
+        </div>
+        <div id="viewLegend" class="legend-row">
+          <span><i class="legend-mark biological"></i>biological priority</span>
+          <span><i class="legend-mark digital"></i>digital priority</span>
+          <span><i class="legend-mark configured"></i>configured receiver</span>
+        </div>
+      </article>
+
+      <section class="inspector-grid">
+        <article class="inspector-panel">
+          <header class="panel-head">
+            <div>
+              <p class="eyebrow">ACTIVE SCALE CHANNEL</p>
+              <h2 id="itemTitle">Item 1 · Chips ≠ neurons</h2>
+            </div>
+            <span id="itemValue">4 → 4 corrected</span>
+          </header>
+          <p id="itemStatement">The fact that artificial intelligences are made with computer chips instead of neurons means that they cannot matter morally.</p>
+          <dl>
+            <div><dt>Classification</dt><dd id="itemClass">Substrate-Explicit</dd></div>
+            <div><dt>Scoring</dt><dd id="itemScoring">direct</dd></div>
+            <div><dt>Audio lane</dt><dd id="itemAudio">low biological + high digital pair</dd></div>
+          </dl>
+        </article>
+
+        <article class="inspector-panel">
+          <header class="panel-head">
+            <div>
+              <p class="eyebrow">SONIFICATION STATE</p>
+              <h2>Authored receiver parameters</h2>
+            </div>
+            <span id="tempoValue">90 BPM</span>
+          </header>
+          <dl>
+            <div><dt>Digital voice</dt><dd id="digitalGain">0.14 gain</dd></div>
+            <div><dt>Biological voice</dt><dd id="biologicalGain">0.15 gain</dd></div>
+            <div><dt>Filter</dt><dd id="filterValue">1,375 Hz</dd></div>
+            <div><dt>Separation</dt><dd id="separationValue">9.0 semitones</dd></div>
+          </dl>
+        </article>
+      </section>
+
+      <section class="outcome-panel" aria-labelledby="outcomeTitle">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">ASSOCIATION RECEIVERS</p>
+            <h2 id="outcomeTitle">Published moral, resource, and advocacy outcomes</h2>
+          </div>
+          <span>Studies 4–5</span>
+        </header>
+        <div id="outcomeCards" class="outcome-cards"></div>
+        <p class="panel-note">
+          Values are transparent reconstructions centred on each study’s published sample mean using the reported controlled slope or odds ratio. They explain direction and scale; they are not the authors’ individual-level fitted predictions.
+        </p>
+      </section>
+
+      <section class="spectrum-panel">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">LOCAL ANALYSER</p>
+            <h2>Signal spectrum</h2>
+          </div>
+          <span id="audioLevel">RMS 0.000</span>
+        </header>
+        <canvas id="spectrumCanvas" role="img" aria-label="Frequency spectrum of the local signal controlling the main visualization."></canvas>
+      </section>
+
+      <section class="mapping-panel" aria-labelledby="mappingTitle">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">PARAMETER MAP</p>
+            <h2 id="mappingTitle">One state, multiple receivers</h2>
+          </div>
+          <span>deterministic mapping</span>
+        </header>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Source parameter</th>
+                <th>Sonification receiver</th>
+                <th>Visual receiver</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>8 corrected item values</td>
+                <td>eight-step pitch and pulse sequence</td>
+                <td>lattice radii and active topology node</td>
+              </tr>
+              <tr>
+                <td>corrected scale mean</td>
+                <td>tempo, voice balance, filter, separation</td>
+                <td>field tension and biological/digital balance</td>
+              </tr>
+              <tr>
+                <td>explicit vs treatment/capacity contrast</td>
+                <td>noise texture and lane emphasis</td>
+                <td>branch intensity and polygon asymmetry</td>
+              </tr>
+              <tr>
+                <td>β / odds-ratio effect field</td>
+                <td>interval direction and attenuation</td>
+                <td>signed coefficient vectors and outcome markers</td>
+              </tr>
+              <tr>
+                <td>RMS + bass / mid / high</td>
+                <td>measured from the active local signal</td>
+                <td>scale, motion, glow, grid, and displacement</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="boundary-panel">
+        <div class="boundary-mark" aria-hidden="true">≠</div>
+        <div>
+          <p class="eyebrow">CLAIM BOUNDARY</p>
+          <h2>Measurement is not ontology; sonification is not evidence.</h2>
+          <p>
+            The eight-item scale, published coefficients, sample sizes, and reliability range are research fixtures. Colours, geometry, synthesis, outcome reconstruction, and audiovisual coupling are authored explanatory receivers. The paper defines substratism descriptively and does not settle whether substrate differences are morally justified.
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          Source: Ali Ladak, Janet V. T. Pauketat, Jacy Reese Anthis, Steve Loughnan, and Matti Wilks,
+          “Substratism: Conceptualizing and measuring moral bias against AI,”
+          <em>Computers in Human Behavior</em> 185 (2026), 109120.
+        </p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="js/substratism-core.js"></script>
+  <script src="js/sonification.js"></script>
+  <script src="js/visuals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
